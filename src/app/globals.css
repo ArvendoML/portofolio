@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --font-sans: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+}
+
+:root {
+  /* Light Mode - Premium, vibrant, slate-indigo aesthetic */
+  --background: #f8fafc; /* slate-50 */
+  --foreground: #0f172a; /* slate-900 */
+  --primary: #4f46e5; /* vibrant indigo-600 */
+  --primary-foreground: #ffffff;
+  --accent: #e0e7ff; /* indigo-100 for soft tinted sections */
+  --accent-foreground: #3730a3; /* indigo-800 */
+  --muted: #f1f5f9; /* slate-100 */
+  --muted-foreground: #64748b; /* slate-500 */
+  --border: #e2e8f0; /* slate-200 */
+  --glow: rgba(79, 70, 229, 0.08); /* subtle indigo glow */
+}
+
+.dark {
+  /* Dark Mode - Deep, immersive, glassmorphism-friendly */
+  --background: #09090b;
+  --foreground: #fafafa;
+  --primary: #818cf8; /* Indigo 400 */
+  --primary-foreground: #111827;
+  --accent: #27272a;
+  --accent-foreground: #fafafa;
+  --muted: #27272a;
+  --muted-foreground: #a1a1aa;
+  --border: #27272a;
+  --glow: rgba(129, 140, 248, 0.06); /* subtle light indigo glow */
+}
+
+body {
+  background-color: var(--background);
+  background-image: 
+    radial-gradient(circle at 15% 0%, var(--glow) 0%, transparent 40%),
+    radial-gradient(circle at 85% 100%, var(--glow) 0%, transparent 40%);
+  background-attachment: fixed;
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom Scrollbar for premium feel */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--muted-foreground);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
