@@ -4,5 +4,5 @@ export const personalInfo = {
   email: "arvendo.mlextian@gmail.com",
   github: "https://github.com/ArvendoML",
   linkedin: "https://www.linkedin.com/in/arvendomanuellextian",
-  resumeUrl: "/Arvendo Manuel Lextian_CV.pdf",
+  resumeUrl: "/resume/Arvendo Manuel Lextian_CV.pdf",
 };
