@@ -23,7 +23,7 @@ export function TimelineItem({ children, isLast = false }: TimelineItemProps) {
   return (
     <div className={`relative pl-8 md:pl-12 group ${isLast ? '' : 'mb-12'}`}>
       {/* Timeline Dot */}
-      <div className="absolute left-0 top-1.5 w-4 h-4 -translate-x-1/2 rounded-full bg-background border-[3px] border-primary/30 group-hover:border-primary transition-colors duration-300 shadow-sm z-10" />
+      <div className="absolute left-0 top-1.5 w-4 h-4 -translate-x-1/2 rounded-full bg-background border-[3px] border-primary/30 group-hover:border-primary group-hover:shadow-[0_0_10px_var(--primary)] transition-all duration-300 z-10" />
       {children}
     </div>
   );

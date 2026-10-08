@@ -72,9 +72,10 @@ export function ExperienceSection() {
                     {exp.projects.map((project, i) => (
                       <div
                         key={i}
-                        className="p-5 rounded-xl bg-card border border-border hover:border-border/80 transition-colors"
+                        className="group relative p-5 rounded-xl bg-card/40 backdrop-blur-sm border border-border hover:bg-card hover:border-primary/50 hover:shadow-[0_0_20px_rgba(59,130,246,0.1)] transition-all duration-500 overflow-hidden"
                       >
-                        <h4 className="font-bold text-foreground mb-2">
+                        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <h4 className="font-bold text-foreground mb-2 relative z-10">
                           {project.name}
                         </h4>
                         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">

@@ -80,9 +80,10 @@ export function ProjectsSection() {
               >
                 <Link
                   href={project.liveUrl || `/projects/${project.id}`}
-                  className="group flex flex-col h-full rounded-xl border border-border bg-card p-8 hover:bg-accent/40 hover:border-primary/50 transition-all duration-300"
+                  className="group flex flex-col h-full rounded-xl border border-border bg-card/40 backdrop-blur-sm p-8 hover:bg-card hover:border-primary/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)] transition-all duration-500 relative overflow-hidden"
                 >
-                  <div className="flex justify-between items-start mb-6">
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="flex justify-between items-start mb-6 relative z-10">
                     <Badge
                       variant="outline"
                       className="bg-background/50 text-muted-foreground border-border/80"
