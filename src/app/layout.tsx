@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Software Engineer | React · Angular · TypeScript",
+  title: "Arvendo Manuel Lextian | Portofolio",
   description:
     "Software Engineer specializing in React, Angular, TypeScript, and modern frontend application development.",
 };
