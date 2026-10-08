@@ -1,59 +1,87 @@
-import { Project } from '../types';
+import { Project } from "../types";
 
 export const projects: Project[] = [
   {
-    id: 'payment-dashboard',
-    name: 'Payment Dashboard',
-    shortDescription: 'Enterprise financial dashboard for managing high-volume transactions.',
-    role: 'Lead Frontend Engineer',
-    technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Redux Toolkit'],
-    type: 'Financial Technology',
-    keyContribution: 'Redesigned the main transaction view, improving rendering performance for large datasets by 40%.',
-    overview: 'A comprehensive dashboard used by enterprise clients to track, analyze, and manage payments across different regions.',
+    id: "primecashx",
+    name: "PrimecashX",
+    shortDescription: "Internal web application for product prototyping.",
+    role: "Frontend Developer",
+    technologies: ["React.js", "TypeScript"],
+    type: "Web Banking Application",
+    images: [],
+    keyContribution:
+      "Built and developed new modules, improved application performance, and collaborated on product prototyping.",
+    overview:
+      "An internal web application suite used by the product team for prototyping.",
     challenges: [
-      'Complex form state management with strict validation rules.',
-      'Large datasets causing performance bottlenecks on the client side.',
-      'Requirement for real-time updates and synchronization.'
+      "Implementing requirements for rapid prototyping",
+      "Maintaining rendering performance",
     ],
-    solution: 'Implemented virtualized lists to handle large datasets efficiently. Abstracted complex form logic into reusable hooks using React Hook Form and Zod for reliable validation. Adopted WebSockets for real-time updates without heavy polling.',
-    architecture: 'Pages \n  ↓\nFeature Components\n  ↓\nShared Components\n  ↓\nHooks / State\n  ↓\nAPI Layer (Mocked)',
-    githubUrl: 'https://github.com',
-    liveUrl: 'https://example.com',
-    images: ['/projects/payment-dashboard.jpg']
+    solution:
+      "Used React.js and TypeScript to build new modules and improve the overall application performance.",
   },
   {
-    id: 'customer-portal',
-    name: 'Customer Success Portal',
-    shortDescription: 'A self-service portal for enterprise customers.',
-    role: 'Senior Frontend Engineer',
-    technologies: ['Angular', 'TypeScript', 'RxJS', 'SCSS'],
-    type: 'Enterprise',
-    keyContribution: 'Migrated legacy jQuery components to modern Angular components.',
-    overview: 'A centralized portal allowing customers to manage subscriptions, open support tickets, and view usage analytics.',
+    id: "kopra-mandiri",
+    name: "Bank Mandiri – KOPRA",
+    shortDescription: "UI web application for wholesale digital banking.",
+    role: "Frontend Developer",
+    technologies: ["Angular", "TypeScript", "Tailwind CSS"],
+    type: "Web Banking Application",
+    images: [],
+    keyContribution:
+      "Created new UI components, optimized UI performance, and improved code structure for maintainability.",
+    overview:
+      "KOPRA is a wholesale digital super platform providing comprehensive financial services for enterprise clients.",
     challenges: [
-      'Legacy code migration with minimal downtime.',
-      'Permission-based UI rendering.',
-      'Responsive design for complex data tables.'
+      "Working with complex enterprise architecture",
+      "Meeting UI/UX and performance requirements",
     ],
-    solution: 'Progressively migrated the application using a hybrid approach. Created a centralized permissions directive to manage UI visibility based on user roles. Designed responsive CSS Grid layouts for tables to remain usable on smaller screens.',
-    architecture: 'Modules \n  ↓\nSmart Components\n  ↓\nDumb Components\n  ↓\nServices / State',
-    githubUrl: 'https://github.com'
+    solution:
+      "Built reusable components using Angular and Tailwind CSS, optimizing rendering performance and improving code maintainability.",
   },
   {
-    id: 'mobile-banking-ui',
-    name: 'Mobile Banking App',
-    shortDescription: 'Cross-platform mobile banking application.',
-    role: 'Mobile Engineer',
-    technologies: ['Flutter', 'Dart', 'Provider'],
-    type: 'Mobile Application',
-    keyContribution: 'Developed the biometric authentication flow and core account overview screens.',
-    overview: 'A consumer-facing mobile banking app offering seamless money transfers, bill payments, and account management.',
+    id: "ccu-cib",
+    name: "CCU Bank – Corporate Internet Banking",
+    shortDescription: "Web banking modules and features for corporate clients.",
+    role: "Frontend Developer",
+    technologies: ["AngularJS"],
+    type: "Web Banking Application",
+    images: [],
+    keyContribution:
+      "Created new banking modules and features, optimized UI performance, and integrated APIs.",
+    overview:
+      "Corporate Internet Banking (CIB) platform enabling corporate clients to manage finances securely.",
     challenges: [
-      'Maintaining 60fps animations on low-end devices.',
-      'Securely handling sensitive financial data.',
-      'Offline support for basic functionalities.'
+      "Working within AngularJS codebase constraints",
+      "Integrating APIs securely",
     ],
-    solution: 'Optimized widget trees to reduce rebuilds. Integrated secure storage for local caching and handled biometric auth safely. Used local databases for offline access to recent transactions.',
-    liveUrl: 'https://example.com'
-  }
+    solution:
+      "Built new features, integrated external APIs, and improved the legacy AngularJS code structure for better maintainability.",
+  },
+  {
+    id: "ccu-pmb",
+    name: "CCU Bank – Premier Mobile Banking",
+    shortDescription: "Mobile banking application modules and features.",
+    role: "Frontend Developer",
+    technologies: ["Flutter", "Dart"],
+    type: "Mobile Banking Application",
+    images: [
+      "/projects/ccu_pmb/CCU-premier-banner.png",
+      "/projects/ccu_pmb/1.png",
+      "/projects/ccu_pmb/2.png",
+      "/projects/ccu_pmb/3.png",
+      "/projects/ccu_pmb/4.png",
+      "/projects/ccu_pmb/5.png",
+    ],
+    keyContribution:
+      "Created new mobile banking modules, optimized UI performance, and integrated APIs.",
+    overview:
+      "A consumer-facing mobile banking application designed for seamless transfers, payments, and account management.",
+    challenges: [
+      "Ensuring smooth UI performance on mobile devices",
+      "Integrating banking APIs securely",
+    ],
+    solution:
+      "Developed new modules using Flutter, optimized UI rendering, and integrated APIs while improving code structure for maintainability.",
+  },
 ];

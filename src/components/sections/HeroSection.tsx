@@ -1,75 +1,64 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { ArrowRight, Download, Terminal } from 'lucide-react';
-import { Github, Linkedin } from '@/components/ui/icons';
-import { SocialButton } from '@/components/ui/SocialButton';
-import Link from 'next/link';
+import { motion } from "framer-motion";
+import { ArrowRight, Download } from "lucide-react";
+import Link from "next/link";
+import { personalInfo } from "@/data/personal";
+import { aboutData } from "@/data/about";
+import { StatsGrid } from "@/components/ui/StatsGrid";
 
 export function HeroSection() {
   return (
-    <section id="home" className="min-h-[calc(100vh-4rem)] flex items-center justify-center pt-16 pb-32 px-4 relative overflow-hidden bg-background">
-      {/* Background decoration */}
-      <div className="absolute inset-0 pointer-events-none flex justify-center items-center opacity-5">
-        <Terminal className="w-[120vw] h-[120vw] max-w-[800px] max-h-[800px] text-primary" />
-      </div>
+    <section
+      id="home"
+      className="scroll-mt-20 min-h-[calc(100vh-4rem)] flex flex-col justify-center pt-24 pb-32 px-4 bg-background relative"
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-primary/5 via-background to-background pointer-events-none"></div>
 
-      <div className="container mx-auto max-w-5xl relative z-10">
+      <div className="container mx-auto max-w-6xl relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="max-w-3xl"
+          className="flex flex-col md:flex-row gap-16 items-start"
         >
-          <div className="inline-block px-3 py-1 mb-6 rounded-full bg-primary/10 border border-primary/20 text-sm font-medium text-primary">
-            Available for new opportunities
-          </div>
-          
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground mb-6 leading-tight">
-            Hi, I'm Arvendo Manuel Lextian.<br/>
-            Software <span className="text-primary">Engineer</span>
-          </h1>
-          
-          <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl leading-relaxed">
-            Building reliable and scalable web applications with React, Angular, TypeScript, and modern frontend architecture. 
-            I focus on performance, accessibility, and exceptional user experiences.
-          </p>
+          {/* Main Content */}
+          <div className="w-full lg:w-2/3">
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground mb-8 leading-[1.1]">
+              Hi, I&apos;m {personalInfo.name.split(" ")[0]}.<br />
+              {personalInfo.role.split(" ")[0]}{" "}
+              <span className="text-primary">
+                {personalInfo.role.split(" ")[1]}
+              </span>
+            </h1>
 
-          <div className="flex flex-col sm:flex-row items-center gap-4">
-            <Link 
-              href="#projects" 
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
-            >
-              View Projects
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            
-            <Link 
-              href="/resume.pdf" 
-              target="_blank"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-accent text-accent-foreground border border-border font-medium hover:bg-accent/80 transition-colors"
-            >
-              Download Resume
-              <Download className="w-4 h-4" />
-            </Link>
+            <div className="text-lg md:text-xl text-muted-foreground mb-10 leading-relaxed space-y-6 max-w-2xl">
+              {aboutData.paragraphs.map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))}
+            </div>
 
-            <div className="flex items-center gap-4 sm:ml-4 mt-4 sm:mt-0">
-              <SocialButton 
-                href="https://github.com" 
-                icon={<Github className="w-5 h-5" />} 
-                label="GitHub" 
-                variant="ghost" 
-              />
-              
-              <SocialButton 
-                href="https://linkedin.com" 
-                icon={<Linkedin className="w-5 h-5" />} 
-                label="LinkedIn" 
-                variant="ghost"
-              />
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <Link
+                href="#projects"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-medium text-sm"
+              >
+                View Projects <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                href={personalInfo.resumeUrl}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-lg border border-border text-foreground hover:bg-accent hover:text-accent-foreground transition-colors font-medium text-sm"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Download Resume <Download className="w-4 h-4" />
+              </Link>
             </div>
           </div>
         </motion.div>
+
+        {/* Stats Grid */}
+        <StatsGrid stats={aboutData.stats} className="mt-24" />
       </div>
     </section>
   );

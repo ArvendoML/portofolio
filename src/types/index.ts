@@ -3,7 +3,10 @@ export interface Technology {
   icon?: string;
 }
 
-export type ProjectCategory = 'Enterprise' | 'Financial Technology' | 'Web Application' | 'Mobile Application' | 'Personal Project';
+export type ProjectCategory =
+  | "Web Banking Application"
+  | "Mobile Banking Application"
+  | "Personal Project";
 
 export interface Project {
   id: string;
@@ -42,7 +45,12 @@ export interface Experience {
   technologies?: string[];
 }
 
-export type SkillCategory = 'Frontend' | 'Backend' | 'Mobile' | 'Engineering' | 'Tools';
+export type SkillCategory =
+  | "Frontend"
+  | "Backend"
+  | "Mobile"
+  | "Engineering"
+  | "Tools";
 
 export interface Skill {
   name: string;

@@ -30,7 +30,7 @@ export function SocialButton({ href, icon, label, variant = 'outline', size = 'm
 
   return (
     <Link href={href} {...externalProps} className={`${baseStyles} ${sizeStyles[size]} ${variants[variant]} ${className}`}>
-      <span className="flex-shrink-0 transition-transform group-hover:scale-110 duration-300">
+      <span className="shrink-0 transition-transform group-hover:scale-110 duration-300">
         {icon}
       </span>
       {label && <span>{label}</span>}

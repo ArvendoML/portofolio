@@ -1,26 +1,53 @@
-import { Skill } from '../types';
+import { Monitor, Smartphone, Cpu, Wrench, LucideIcon } from "lucide-react";
 
-export const skills: Skill[] = [
-  { name: 'React', category: 'Frontend' },
-  { name: 'Angular', category: 'Frontend' },
-  { name: 'Next.js', category: 'Frontend' },
-  { name: 'TypeScript', category: 'Frontend' },
-  { name: 'JavaScript', category: 'Frontend' },
-  { name: 'HTML', category: 'Frontend' },
-  { name: 'CSS', category: 'Frontend' },
-  { name: 'Tailwind CSS', category: 'Frontend' },
-  { name: 'Flutter', category: 'Mobile' },
-  { name: 'Dart', category: 'Mobile' },
-  { name: 'Component Architecture', category: 'Engineering' },
-  { name: 'State Management', category: 'Engineering' },
-  { name: 'REST API Integration', category: 'Engineering' },
-  { name: 'Responsive Design', category: 'Engineering' },
-  { name: 'Accessibility', category: 'Engineering' },
-  { name: 'Performance Optimization', category: 'Engineering' },
-  { name: 'Testing', category: 'Engineering' },
-  { name: 'Git', category: 'Tools' },
-  { name: 'GitHub', category: 'Tools' },
-  { name: 'VS Code', category: 'Tools' },
-  { name: 'Figma', category: 'Tools' },
-  { name: 'CI/CD', category: 'Tools' }
+export type SkillCategory = {
+  category: string;
+  icon: LucideIcon;
+  skills: string[];
+};
+
+export const technicalSkills: SkillCategory[] = [
+  {
+    category: "Frontend",
+    icon: Monitor,
+    skills: ["React", "Angular", "Next.js", "TypeScript", "JavaScript", "HTML & CSS", "Tailwind CSS"]
+  },
+  {
+    category: "Mobile",
+    icon: Smartphone,
+    skills: ["Flutter", "Dart"]
+  },
+  {
+    category: "Engineering",
+    icon: Cpu,
+    skills: ["Component Architecture", "State Management", "REST API", "Responsive Design", "Accessibility", "Web Performance", "Testing"]
+  },
+  {
+    category: "Tools",
+    icon: Wrench,
+    skills: ["Git", "GitHub", "VS Code", "Figma", "CI/CD"]
+  }
+];
+
+export const engineeringApproach = [
+  {
+    id: "01",
+    title: "Maintainability",
+    description: "Build modular applications with clear boundaries, reusable components, and strict adherence to clean code principles."
+  },
+  {
+    id: "02",
+    title: "Reliability",
+    description: "Handle loading, error, empty and edge cases as first-class citizens to ensure a resilient user experience."
+  },
+  {
+    id: "03",
+    title: "Performance",
+    description: "Minimize unnecessary renders, network requests, and client-side complexity to deliver fast, fluid applications."
+  },
+  {
+    id: "04",
+    title: "User Experience",
+    description: "Create highly responsive, accessible, and predictable interfaces that delight users on any device."
+  }
 ];

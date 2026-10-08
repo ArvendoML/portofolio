@@ -8,7 +8,7 @@ export function Timeline({ children }: TimelineProps) {
   return (
     <div className="relative ml-6">
       {/* Continuous Timeline Line */}
-      <div className="absolute left-0 top-[14px] bottom-0 w-[2px] bg-primary/20 -translate-x-1/2" />
+      <div className="absolute left-0 top-3.5 bottom-0 w-[1px] neon-line-v -translate-x-1/2" />
       {children}
     </div>
   );

@@ -1,10 +1,11 @@
 import { notFound } from 'next/navigation';
 import { projects } from '@/data/projects';
 import Link from 'next/link';
-import { ArrowLeft, ArrowUpRight, LayoutTemplate } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, LayoutTemplate, Lock } from 'lucide-react';
 import { Github } from '@/components/ui/icons';
 import { Badge } from '@/components/ui/Badge';
 import { SocialButton } from '@/components/ui/SocialButton';
+import { ProjectSlideshow } from '@/components/ui/ProjectSlideshow';
 
 interface ProjectPageProps {
   params: Promise<{
@@ -29,20 +30,15 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation Bar */}
-      <nav className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-md">
-        <div className="container mx-auto px-4 h-16 flex items-center">
-          <Link 
-            href="/#projects" 
-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Portfolio
-          </Link>
-        </div>
-      </nav>
+      <main className="container mx-auto max-w-6xl px-4 py-12 md:py-24">
+        <Link 
+          href="/#projects" 
+          className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors mb-12 group"
+        >
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+          Back to Portfolio
+        </Link>
 
-      <main className="container mx-auto max-w-4xl px-4 py-12 md:py-24">
         {/* Header Section */}
         <header className="mb-16">
           <div className="flex items-center gap-4 mb-6">
@@ -80,23 +76,32 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </header>
 
         {/* Mockup / Image Section */}
-        <section className="mb-20 rounded-2xl overflow-hidden border border-border bg-accent/20 aspect-video flex items-center justify-center relative">
-           {/* If images exist, map through them. Otherwise show placeholder */}
-           {project.images && project.images.length > 0 ? (
-             <img 
-                src={project.images[0]} 
-                alt={`${project.name} preview`} 
-                className="w-full h-full object-cover"
-             />
-           ) : (
-             <div className="text-center p-8">
-                <LayoutTemplate className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
-                <p className="text-muted-foreground font-medium">Detailed Mockups Available Upon Request</p>
-                <p className="text-sm text-muted-foreground/70 mt-2">(Proprietary Interface)</p>
-             </div>
-           )}
-        </section>
-
+        {project.images && project.images.length > 0 ? (
+          <section className="mb-20">
+            <ProjectSlideshow images={project.images} projectName={project.name} />
+          </section>
+        ) : (
+          <section className="mb-20 rounded-2xl overflow-hidden border border-border bg-card w-full h-64 md:h-80 flex items-center justify-center relative">
+            {/* Abstract Background Pattern */}
+            <div 
+              className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]" 
+              style={{ backgroundImage: 'radial-gradient(var(--foreground) 1px, transparent 1px)', backgroundSize: '32px 32px' }} 
+            />
+            
+            {/* Glowing Orbs */}
+            <div className="absolute -top-1/2 -left-1/2 w-full h-full rounded-full bg-primary/10 blur-3xl opacity-50 mix-blend-screen" />
+            <div className="absolute -bottom-1/2 -right-1/2 w-full h-full rounded-full bg-blue-500/10 blur-3xl opacity-50 mix-blend-screen" />
+            
+            {/* Center Content */}
+            <div className="relative z-10 flex flex-col items-center justify-center text-center px-4">
+              <div className="w-20 h-20 rounded-2xl bg-background/50 backdrop-blur-sm border border-border flex items-center justify-center mb-6 shadow-2xl">
+                <LayoutTemplate className="w-10 h-10 text-primary/80" />
+              </div>
+              <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-3">{project.name}</h3>
+              <p className="text-muted-foreground font-medium">{project.type}</p>
+            </div>
+          </section>
+        )}
         {/* Content Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Main Content */}

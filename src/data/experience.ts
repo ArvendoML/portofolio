@@ -3,53 +3,33 @@ import { Experience } from '../types';
 export const experiences: Experience[] = [
   {
     id: 'exp-1',
-    company: 'PT Example Consulting',
-    position: 'IT Consultant',
-    startDate: '2024',
+    company: 'PT. Wide Technology Indonesia',
+    position: 'Software Engineer',
+    startDate: '12/2023',
     endDate: 'Present',
-    location: 'Jakarta, Indonesia',
-    description: 'Architecting and delivering tailored modern web solutions and infrastructure for multiple enterprise clients.',
+    location: 'South Jakarta',
+    description: 'Developed internal web applications and client banking projects.',
     projects: [
       {
-        name: 'Enterprise E-Commerce Replatforming',
-        description: 'Led the migration of a legacy monolithic e-commerce platform to a modern micro-frontend architecture, resulting in a 40% performance increase.',
-        technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'GraphQL']
+        name: 'Internal Product Team – PrimecashX',
+        description: 'Build and develop internal web applications using React.js & TypeScript. Create new modules, improve performance, and collaborate on product prototyping.',
+        technologies: ['React.js', 'TypeScript']
       },
       {
-        name: 'Financial Dashboard System',
-        description: 'Developed a real-time analytics dashboard for a major regional bank to monitor high-frequency transactions securely.',
-        technologies: ['React', 'Redux Toolkit', 'D3.js', 'WebSockets']
+        name: 'Bank Mandiri – KOPRA',
+        description: 'Build and develop UI web application using Angular, TypeScript, and Tailwind. Create new components, optimize UI performance and improve code structure for maintainability.',
+        technologies: ['Angular', 'TypeScript', 'Tailwind CSS']
+      },
+      {
+        name: 'CCU Bank – Corporate Internet Banking (CIB)',
+        description: 'Build and develop banking modules and features using AngularJS. Create new modules and features, optimize UI performance, integrate APIs and improve code structure for better maintainability.',
+        technologies: ['AngularJS']
+      },
+      {
+        name: 'CCU Bank – Premier Mobile Banking (PMB)',
+        description: 'Build and develop mobile banking modules and features using Flutter. Create new modules and features, optimize UI performance, integrate APIs and improve code structure for maintainability.',
+        technologies: ['Flutter']
       }
     ]
-  },
-  {
-    id: 'exp-2',
-    company: 'Global FinTech Corp',
-    position: 'Frontend Developer',
-    startDate: '2021',
-    endDate: '2024',
-    location: 'Singapore (Remote)',
-    description: 'Built scalable user interfaces for financial data analysis.',
-    responsibilities: [
-      'Designed and implemented complex data visualization dashboards.',
-      'Optimized React application performance reducing load times by 30%.',
-      'Mentored junior developers and established code review guidelines.'
-    ],
-    technologies: ['React', 'Redux', 'D3.js', 'Styled Components']
-  },
-  {
-    id: 'exp-3',
-    company: 'Startup Solutions Inc',
-    position: 'Junior Web Developer',
-    startDate: '2019',
-    endDate: '2021',
-    location: 'Jakarta, Indonesia',
-    description: 'Contributed to the development of various client web projects.',
-    responsibilities: [
-      'Built responsive web pages from Figma designs.',
-      'Integrated RESTful APIs to display dynamic content.',
-      'Maintained legacy Angular applications.'
-    ],
-    technologies: ['JavaScript', 'HTML/CSS', 'Angular', 'RxJS']
   }
 ];
