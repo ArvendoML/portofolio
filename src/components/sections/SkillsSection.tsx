@@ -1,18 +1,40 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { Badge } from "@/components/ui/Badge";
 import {
-  technicalSkills,
-  SkillCategory,
-} from "@/data/skills";
+  Cpu,
+  Monitor,
+  Server,
+  Smartphone,
+  Wrench,
+  type LucideIcon,
+} from "lucide-react";
+import { Badge } from "@/components/ui/Badge";
+import { Section } from "@/components/ui/Section";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { Reveal } from "@/components/ui/Reveal";
+import { technicalSkills } from "@/data/skills";
+import type { SkillCategory, SkillGroupName } from "@/types";
 
-function SkillCategoryCard({ category, icon: Icon, skills }: SkillCategory) {
+const SKILL_ICONS: Record<SkillGroupName, LucideIcon> = {
+  Frontend: Monitor,
+  Backend: Server,
+  Mobile: Smartphone,
+  Engineering: Cpu,
+  Tools: Wrench,
+};
+
+function SkillCategoryCard({
+  category,
+  skills,
+  className = "",
+}: SkillCategory & { className?: string }) {
+  const Icon = SKILL_ICONS[category];
+
   return (
-    <div className="group relative p-8 border-b sm:border-b-0 sm:border-r border-border/50 hover:bg-accent/10 transition-colors overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      <div className="flex items-center gap-3 mb-6 text-foreground">
-        <Icon className="w-5 h-5 text-primary" />
+    <div
+      className={`group relative p-7 sm:p-8 bg-card hover:bg-accent/15 transition-colors overflow-hidden ${className}`}
+    >
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="flex items-center gap-3 mb-5 text-foreground">
+        <Icon className="w-5 h-5 text-primary shrink-0" />
         <h3 className="font-bold text-lg">{category}</h3>
       </div>
       <div className="flex flex-wrap gap-2">
@@ -20,7 +42,7 @@ function SkillCategoryCard({ category, icon: Icon, skills }: SkillCategory) {
           <Badge
             key={skill}
             variant="outline"
-            className="bg-background border-border/60 text-muted-foreground"
+            className="bg-background border-border/70 text-muted-foreground"
           >
             {skill}
           </Badge>
@@ -32,37 +54,24 @@ function SkillCategoryCard({ category, icon: Icon, skills }: SkillCategory) {
 
 export function SkillsSection() {
   return (
-    <section
-      id="skills"
-      className="scroll-mt-20 py-24 px-4 bg-background border-t border-border/50"
-    >
-      <div className="container mx-auto max-w-6xl">
-        {/* Technical Skills */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="text-sm font-semibold tracking-wider text-primary mb-6 uppercase">
-            SKILLS
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-16 leading-tight">
-            Technical Skills
-          </h2>
+    <Section id="skills">
+      <Reveal>
+        <SectionHeader eyebrow="SKILLS" title="Technical Skills" />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border border-border/50 rounded-xl overflow-hidden bg-card">
-            {technicalSkills.map((item, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-px bg-border/60 rounded-xl overflow-hidden border border-border/60">
+          {technicalSkills.map((item, index) => {
+            const spanClass = index < 3 ? "md:col-span-2" : "md:col-span-3";
+            return (
               <SkillCategoryCard
-                key={index}
+                key={item.category}
                 category={item.category}
-                icon={item.icon}
                 skills={item.skills}
+                className={spanClass}
               />
-            ))}
-          </div>
-        </motion.div>
-      </div>
-    </section>
+            );
+          })}
+        </div>
+      </Reveal>
+    </Section>
   );
 }

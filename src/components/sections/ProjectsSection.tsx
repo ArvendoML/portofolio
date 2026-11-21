@@ -1,151 +1,213 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { projects } from "@/data/projects";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { Github } from "@/components/ui/icons";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { Badge } from "@/components/ui/Badge";
+import useEmblaCarousel from "embla-carousel-react";
+import { motion } from "framer-motion";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  PROJECT_CATEGORIES,
+  filterProjects,
+  type ProjectFilterCategory,
+} from "@/lib/projects";
+import { Section } from "@/components/ui/Section";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { ProjectCard } from "@/components/projects/ProjectCard";
+import type { Project } from "@/types";
 
-const CATEGORIES = [
-  "All",
-  ...Array.from(new Set(projects.map((p) => p.type))),
-] as const;
-type FilterCategory = (typeof CATEGORIES)[number];
+const PROJECTS_PER_SLIDE = 4;
+
+function chunkProjects(items: Project[], size: number): Project[][] {
+  const chunks: Project[][] = [];
+  for (let i = 0; i < items.length; i += size) {
+    chunks.push(items.slice(i, i + size));
+  }
+  return chunks;
+}
 
 export function ProjectsSection() {
-  const [filter, setFilter] = useState<FilterCategory>("All");
-
-  const filteredProjects = projects.filter(
-    (project) => filter === "All" || project.type === filter,
+  const [filter, setFilter] = useState<ProjectFilterCategory>("All");
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [viewportHeight, setViewportHeight] = useState<number | undefined>(
+    undefined,
   );
 
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: "start",
+    loop: false,
+  });
+
+  const filteredProjects = useMemo(() => filterProjects(filter), [filter]);
+
+  const slides = useMemo(
+    () => chunkProjects(filteredProjects, PROJECTS_PER_SLIDE),
+    [filteredProjects],
+  );
+
+  const isPrevDisabled = selectedIndex <= 0;
+  const isNextDisabled = selectedIndex >= slides.length - 1;
+
+  const syncCarouselState = useCallback(() => {
+    if (!emblaApi) return;
+    const index = emblaApi.selectedScrollSnap();
+    setSelectedIndex(index);
+
+    const activeSlide = emblaApi.slideNodes()[index];
+    if (activeSlide && activeSlide.offsetHeight > 0) {
+      setViewportHeight(activeSlide.offsetHeight);
+    }
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    emblaApi.on("select", syncCarouselState);
+    emblaApi.on("reInit", syncCarouselState);
+    return () => {
+      emblaApi.off("select", syncCarouselState);
+      emblaApi.off("reInit", syncCarouselState);
+    };
+  }, [emblaApi, syncCarouselState]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    emblaApi.reInit();
+    emblaApi.scrollTo(0, true);
+  }, [emblaApi, slides.length]);
+
+  const handleFilterChange = (category: ProjectFilterCategory) => {
+    setFilter(category);
+    setSelectedIndex(0);
+  };
+
+  const scrollPrev = () => emblaApi?.scrollPrev();
+  const scrollNext = () => emblaApi?.scrollNext();
+  const scrollTo = (index: number) => emblaApi?.scrollTo(index);
+
   return (
-    <section
-      id="projects"
-      className="scroll-mt-20 py-24 px-4 bg-accent/5 dark:bg-background border-t border-border/50"
-    >
-      <div className="container mx-auto max-w-6xl">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
-          <div>
-            <div className="text-sm font-semibold tracking-wider text-primary mb-6 uppercase">
-              PROJECTS
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground leading-tight">
-              Selected Work
-            </h2>
-          </div>
+    <Section id="projects" variant="muted">
+      <SectionHeader
+        eyebrow="PROJECTS"
+        title="Selected Work"
+        className="mb-8 md:mb-10"
+        action={
           <Link
             href="/projects"
-            className="text-primary hover:text-primary/80 transition-colors flex items-center gap-2 text-sm font-medium"
+            className="text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-2 text-sm font-medium"
           >
             View all projects <ArrowRight className="w-4 h-4" />
           </Link>
-        </div>
+        }
+      />
 
-        {/* Tabs */}
-        <div className="flex flex-wrap gap-8 border-b border-border/50 mb-12">
-          {CATEGORIES.map((category) => (
-            <button
-              key={category}
-              onClick={() => setFilter(category)}
-              className={`pb-4 text-sm font-medium transition-colors relative ${
-                filter === category
-                  ? "text-primary"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {category}
-              {filter === category && (
-                <motion.div
-                  layoutId="activeTab"
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
-                />
-              )}
-            </button>
-          ))}
-        </div>
-
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <AnimatePresence>
-            {filteredProjects.map((project) => (
-              <motion.div
-                key={project.id}
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3 }}
+      <div
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Selected projects"
+        className="relative"
+      >
+        {/* Tabs + Fixed-Position Carousel Controls */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border/50 mb-10">
+          <div
+            role="tablist"
+            aria-label="Filter projects by category"
+            className="flex flex-wrap gap-6 sm:gap-8"
+          >
+            {PROJECT_CATEGORIES.map((category) => (
+              <button
+                key={category}
+                type="button"
+                role="tab"
+                aria-selected={filter === category}
+                onClick={() => handleFilterChange(category)}
+                className={`pb-4 text-sm font-medium transition-colors relative ${
+                  filter === category
+                    ? "text-primary"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
               >
-                <Link
-                  href={project.liveUrl || `/projects/${project.id}`}
-                  className="group flex flex-col h-full rounded-xl border border-border bg-card/40 backdrop-blur-sm p-8 hover:bg-card hover:border-primary/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)] transition-all duration-500 relative overflow-hidden"
-                >
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="flex justify-between items-start mb-6 relative z-10">
-                    <Badge
-                      variant="outline"
-                      className="bg-background/50 text-muted-foreground border-border/80"
-                    >
-                      {project.type}
-                    </Badge>
-                    <div className="p-2 rounded-full bg-background border border-border opacity-0 group-hover:opacity-100 group-hover:bg-primary/10 group-hover:text-primary group-hover:border-primary/20 transition-all -translate-y-2 group-hover:translate-y-0">
-                      <ArrowUpRight className="w-4 h-4" />
-                    </div>
-                  </div>
-
-                  <h3 className="text-2xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors">
-                    {project.name}
-                  </h3>
-
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-8 grow">
-                    {project.shortDescription}
-                  </p>
-
-                  <div className="flex flex-wrap gap-2 mb-8">
-                    {project.technologies.slice(0, 4).map((tech) => (
-                      <Badge
-                        key={tech}
-                        variant="outline"
-                        className="border-border/60 bg-transparent text-muted-foreground"
-                      >
-                        {tech}
-                      </Badge>
-                    ))}
-                    {project.technologies.length > 4 && (
-                      <Badge
-                        variant="outline"
-                        className="border-border/60 bg-transparent text-muted-foreground"
-                      >
-                        +{project.technologies.length - 4}
-                      </Badge>
-                    )}
-                  </div>
-
-                  <div className="flex items-center justify-between mt-auto pt-4 border-t border-border/50">
-                    <span className="text-primary group-hover:text-primary/80 transition-colors flex items-center gap-2 text-sm font-medium">
-                      View case study <ArrowRight className="w-4 h-4" />
-                    </span>
-
-                    {project.githubUrl && (
-                      <span
-                        className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 text-sm font-medium z-10"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          window.open(project.githubUrl, "_blank");
-                        }}
-                      >
-                        <Github className="w-4 h-4" /> View code
-                      </span>
-                    )}
-                  </div>
-                </Link>
-              </motion.div>
+                {category}
+                {filter === category && (
+                  <motion.div
+                    layoutId="activeProjectTab"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+                  />
+                )}
+              </button>
             ))}
-          </AnimatePresence>
-        </motion.div>
+          </div>
+
+          {slides.length > 1 && (
+            <div className="flex items-center justify-between sm:justify-end gap-4 pb-3 shrink-0">
+              <div className="flex items-center gap-3">
+                <span className="text-xs font-mono text-muted-foreground">
+                  Page {selectedIndex + 1} / {slides.length}
+                </span>
+                <div className="flex items-center gap-1.5">
+                  {slides.map((_, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => scrollTo(index)}
+                      aria-label={`Go to project page ${index + 1}`}
+                      aria-current={index === selectedIndex ? "true" : undefined}
+                      className={`h-2 rounded-full transition-all ${
+                        index === selectedIndex
+                          ? "w-5 bg-primary"
+                          : "w-2 bg-muted-foreground/40 hover:bg-muted-foreground"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={scrollPrev}
+                  disabled={isPrevDisabled}
+                  aria-label="Previous projects page"
+                  className="w-9 h-9 rounded-lg border border-border bg-card/60 flex items-center justify-center text-foreground hover:bg-accent hover:border-primary/40 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={scrollNext}
+                  disabled={isNextDisabled}
+                  aria-label="Next projects page"
+                  className="w-9 h-9 rounded-lg border border-border bg-card/60 flex items-center justify-center text-foreground hover:bg-accent hover:border-primary/40 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Slides */}
+        <div
+          ref={emblaRef}
+          style={
+            viewportHeight !== undefined
+              ? { height: `${viewportHeight}px` }
+              : undefined
+          }
+          className="overflow-hidden -m-1 p-1 transition-[height] duration-300 ease-out"
+        >
+          <div className="flex items-start">
+            {slides.map((group, slideIdx) => (
+              <div
+                key={`${filter}-${slideIdx}`}
+                className="flex-[0_0_100%] min-w-0 grid grid-cols-1 md:grid-cols-2 gap-8"
+              >
+                {group.map((project) => (
+                  <ProjectCard key={project.id} project={project} />
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-    </section>
+    </Section>
   );
 }

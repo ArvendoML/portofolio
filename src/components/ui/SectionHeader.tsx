@@ -1,32 +1,40 @@
-import React from 'react';
+import type { ReactNode } from "react";
 
 interface SectionHeaderProps {
+  eyebrow?: string;
   title: string;
   description?: string;
-  icon?: React.ReactNode;
-  align?: 'left' | 'center';
+  action?: ReactNode;
   className?: string;
 }
 
-export function SectionHeader({ title, description, icon, align = 'left', className = '' }: SectionHeaderProps) {
+export function SectionHeader({
+  eyebrow,
+  title,
+  description,
+  action,
+  className = "",
+}: SectionHeaderProps) {
   return (
-    <div className={`mb-12 ${align === 'center' ? 'text-center' : ''} ${className}`}>
-      {icon ? (
-        <div className={`flex items-center gap-4 ${align === 'center' ? 'justify-center' : ''} mb-6`}>
-          <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-            {icon}
+    <div
+      className={`flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 md:mb-16 ${className}`}
+    >
+      <div>
+        {eyebrow && (
+          <div className="text-sm font-semibold tracking-wider text-primary mb-4 uppercase font-mono">
+            {eyebrow}
           </div>
-          <h2 className="text-3xl font-bold tracking-tight text-foreground">{title}</h2>
-        </div>
-      ) : (
-        <h2 className="text-3xl font-bold tracking-tight text-foreground mb-4">{title}</h2>
-      )}
-      
-      {description && (
-        <p className={`text-muted-foreground max-w-2xl ${align === 'center' ? 'mx-auto' : ''}`}>
-          {description}
-        </p>
-      )}
+        )}
+        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground leading-tight">
+          {title}
+        </h2>
+        {description && (
+          <p className="text-muted-foreground max-w-2xl mt-4 leading-relaxed">
+            {description}
+          </p>
+        )}
+      </div>
+      {action && <div className="shrink-0">{action}</div>}
     </div>
   );
 }

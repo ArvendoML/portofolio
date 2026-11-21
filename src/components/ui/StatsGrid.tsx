@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { Reveal } from "@/components/ui/Reveal";
 
 export interface Stat {
   value: string;
@@ -12,23 +12,25 @@ interface StatsGridProps {
   columns?: 2 | 4;
 }
 
-export function StatsGrid({ stats, className = "", columns = 4 }: StatsGridProps) {
+export function StatsGrid({
+  stats,
+  className = "",
+  columns = 4,
+}: StatsGridProps) {
   const isFourCols = columns === 4;
-  
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: 0.2 }}
-      className={`grid grid-cols-2 ${isFourCols ? 'md:grid-cols-4' : 'md:grid-cols-2'} ${className}`}
+    <Reveal
+      immediate
+      delay={0.15}
+      className={`grid grid-cols-2 ${isFourCols ? "md:grid-cols-4" : "md:grid-cols-2"} ${className}`}
     >
       {stats.map((stat, index) => {
         let rightLine = false;
         let rightLineDesktop = false;
         let bottomLine = false;
         let bottomLineMobile = false;
-        
+
         if (isFourCols) {
           if (index === 0) {
             rightLine = true;
@@ -50,18 +52,20 @@ export function StatsGrid({ stats, className = "", columns = 4 }: StatsGridProps
 
         return (
           <div
-            key={index}
-            className="flex flex-col py-8 md:py-12 px-4 sm:px-8 relative"
+            key={stat.label}
+            className={`flex flex-col relative ${
+              isFourCols
+                ? "py-8 md:py-12 px-4 sm:px-8"
+                : "py-6 px-5 sm:px-6"
+            }`}
           >
-            {/* Right Line */}
             {rightLine && (
               <div className="absolute right-0 top-0 bottom-0 w-[1px] neon-line-v" />
             )}
             {rightLineDesktop && (
               <div className="hidden md:block absolute right-0 top-0 bottom-0 w-[1px] neon-line-v" />
             )}
-            
-            {/* Bottom Line */}
+
             {bottomLine && (
               <div className="absolute bottom-0 left-0 right-0 h-[1px] neon-line-h" />
             )}
@@ -69,20 +73,24 @@ export function StatsGrid({ stats, className = "", columns = 4 }: StatsGridProps
               <div className="block md:hidden absolute bottom-0 left-0 right-0 h-[1px] neon-line-h" />
             )}
 
-            <div className="text-3xl font-bold text-foreground mb-2">
+            <div
+              className={`font-bold text-foreground mb-1.5 leading-snug ${
+                isFourCols ? "text-3xl" : "text-xl sm:text-2xl"
+              }`}
+            >
               {stat.value}
             </div>
             <div className="text-sm font-medium text-muted-foreground">
               {stat.label}
             </div>
             {stat.subtext && (
-              <div className="text-xs text-muted-foreground mt-1">
+              <div className="text-xs text-muted-foreground/80 mt-1 leading-relaxed">
                 {stat.subtext}
               </div>
             )}
           </div>
         );
       })}
-    </motion.div>
+    </Reveal>
   );
 }

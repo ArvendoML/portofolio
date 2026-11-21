@@ -1,114 +1,205 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Mail, ArrowRight, ArrowUp } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import {
+  ArrowUpRight,
+  Check,
+  ChevronDown,
+  Copy,
+  ExternalLink,
+  Mail,
+} from "lucide-react";
 import { Github, Linkedin } from "@/components/ui/icons";
+import { Reveal } from "@/components/ui/Reveal";
+import { Section } from "@/components/ui/Section";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { personalInfo } from "@/data/personal";
-import Link from "next/link";
 
 export function ContactSection() {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const [copied, setCopied] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, [menuOpen]);
+
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(personalInfo.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Fallback if clipboard API is unavailable
+    }
   };
 
+  const encodedEmail = encodeURIComponent(personalInfo.email);
+  const emailOptions = [
+    {
+      label: "Open in Gmail",
+      href: `https://mail.google.com/mail/?view=cm&fs=1&to=${encodedEmail}`,
+    },
+    {
+      label: "Open in Outlook",
+      href: `https://outlook.office.com/mail/deeplink/compose?to=${encodedEmail}`,
+    },
+  ];
+
   return (
-    <footer
-      id="contact"
-      className="bg-accent/5 dark:bg-background border-t border-border/50 pt-24 pb-8 px-4"
-    >
-      <div className="container mx-auto max-w-6xl">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="grid md:grid-cols-2 gap-16 mb-24"
-        >
-          {/* Left Column */}
-          <div>
-            <div className="text-sm font-semibold tracking-wider text-primary mb-6 uppercase">
-              GET IN TOUCH
-            </div>
-            <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
-              Let&apos;s build something great.
-            </h2>
-          </div>
+    <Section id="contact" variant="muted">
+      <Reveal className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        <div className="lg:col-span-6">
+          <SectionHeader
+            eyebrow="GET IN TOUCH"
+            title="Let's build something great."
+            description="Open to discussing frontend, mobile, and fullstack software engineering roles or technical collaborations."
+            className="mb-8 md:mb-8"
+          />
 
-          {/* Right Column */}
-          <div className="flex flex-col sm:flex-row gap-12 sm:items-center justify-between">
-            <div className="space-y-6">
-              <a
-                href={`mailto:${personalInfo.email}`}
-                className="flex items-center gap-4 text-muted-foreground hover:text-foreground transition-colors group"
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="relative" ref={menuRef}>
+              <button
+                type="button"
+                onClick={() => setMenuOpen((prev) => !prev)}
+                aria-haspopup="menu"
+                aria-expanded={menuOpen}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-sm font-medium"
               >
-                <Mail className="w-5 h-5 group-hover:text-primary transition-colors" />
-                <div>
-                  <div className="text-sm font-bold text-foreground">Email</div>
-                  <div className="text-sm">{personalInfo.email}</div>
-                </div>
-              </a>
+                <Mail className="w-4 h-4" />
+                <span>Send Email</span>
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    menuOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
 
-              <a
-                href={personalInfo.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-4 text-muted-foreground hover:text-foreground transition-colors group"
-              >
-                <Linkedin className="w-5 h-5 group-hover:text-primary transition-colors" />
-                <div>
-                  <div className="text-sm font-bold text-foreground">
-                    LinkedIn
-                  </div>
-                  <div className="text-sm">
-                    {personalInfo.linkedin
-                      .replace("https://www.", "")
-                      .replace("https://", "")}
-                  </div>
+              {menuOpen && (
+                <div
+                  role="menu"
+                  aria-label="Choose email client"
+                  className="absolute left-0 mt-2 w-56 rounded-xl border border-border bg-card shadow-xl py-1.5 z-20"
+                >
+                  {emailOptions.map((option) => (
+                    <a
+                      key={option.label}
+                      role="menuitem"
+                      href={option.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={() => setMenuOpen(false)}
+                      className="flex items-center justify-between px-4 py-2.5 text-sm text-foreground hover:bg-accent transition-colors"
+                    >
+                      <span>{option.label}</span>
+                      <ExternalLink className="w-3.5 h-3.5 text-muted-foreground" />
+                    </a>
+                  ))}
                 </div>
-              </a>
-
-              <a
-                href={personalInfo.github}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-4 text-muted-foreground hover:text-foreground transition-colors group"
-              >
-                <Github className="w-5 h-5 group-hover:text-primary transition-colors" />
-                <div>
-                  <div className="text-sm font-bold text-foreground">
-                    GitHub
-                  </div>
-                  <div className="text-sm">
-                    {personalInfo.github.replace("https://", "")}
-                  </div>
-                </div>
-              </a>
+              )}
             </div>
 
-            {/* <a
-              href={`mailto:${personalInfo.email}`}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg border border-border text-foreground hover:bg-accent/50 transition-colors w-full sm:w-auto mt-6 sm:mt-0"
-            >
-              Send Message <ArrowRight className="w-4 h-4" />
-            </a> */}
-          </div>
-        </motion.div>
-
-        {/* Footer Bottom */}
-        <div className="flex flex-col sm:flex-row items-center justify-between pt-8 border-t border-border/50 text-sm text-muted-foreground">
-          <div className="mb-4 sm:mb-0">{personalInfo.name}</div>
-          <div className="flex items-center gap-4">
-            <span>© {new Date().getFullYear()}. All rights reserved.</span>
             <button
-              onClick={scrollToTop}
-              className="p-2 rounded bg-accent/50 hover:bg-accent hover:text-foreground transition-colors border border-border"
-              aria-label="Scroll to top"
+              type="button"
+              onClick={handleCopyEmail}
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg border border-border bg-card/60 text-foreground hover:bg-accent transition-colors text-sm font-medium"
             >
-              <ArrowUp className="w-4 h-4" />
+              {copied ? (
+                <>
+                  <Check className="w-4 h-4 text-emerald-500" />
+                  <span>Email Copied</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-4 h-4 text-muted-foreground" />
+                  <span>Copy Email</span>
+                </>
+              )}
             </button>
           </div>
         </div>
-      </div>
-    </footer>
+
+        <div className="lg:col-span-6 space-y-4">
+          <a
+            href={`mailto:${personalInfo.email}`}
+            className="group flex items-center justify-between gap-4 p-5 rounded-xl border border-border bg-card/50 hover:bg-card hover:border-primary/50 transition-all"
+          >
+            <div className="flex items-center gap-4 min-w-0">
+              <div className="w-11 h-11 rounded-lg border border-border bg-background flex items-center justify-center text-muted-foreground group-hover:border-primary/40 group-hover:text-primary transition-colors shrink-0">
+                <Mail className="w-5 h-5" />
+              </div>
+              <div className="min-w-0">
+                <div className="text-sm font-bold text-foreground">Email</div>
+                <div className="text-sm text-muted-foreground truncate">
+                  {personalInfo.email}
+                </div>
+              </div>
+            </div>
+            <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
+          </a>
+
+          <a
+            href={personalInfo.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            className="group flex items-center justify-between gap-4 p-5 rounded-xl border border-border bg-card/50 hover:bg-card hover:border-primary/50 transition-all"
+          >
+            <div className="flex items-center gap-4 min-w-0">
+              <div className="w-11 h-11 rounded-lg border border-border bg-background flex items-center justify-center text-muted-foreground group-hover:border-primary/40 group-hover:text-primary transition-colors shrink-0">
+                <Linkedin className="w-5 h-5" />
+              </div>
+              <div className="min-w-0">
+                <div className="text-sm font-bold text-foreground">
+                  LinkedIn
+                </div>
+                <div className="text-sm text-muted-foreground truncate">
+                  {personalInfo.linkedin
+                    .replace("https://www.", "")
+                    .replace("https://", "")}
+                </div>
+              </div>
+            </div>
+            <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
+          </a>
+
+          <a
+            href={personalInfo.github}
+            target="_blank"
+            rel="noreferrer"
+            className="group flex items-center justify-between gap-4 p-5 rounded-xl border border-border bg-card/50 hover:bg-card hover:border-primary/50 transition-all"
+          >
+            <div className="flex items-center gap-4 min-w-0">
+              <div className="w-11 h-11 rounded-lg border border-border bg-background flex items-center justify-center text-muted-foreground group-hover:border-primary/40 group-hover:text-primary transition-colors shrink-0">
+                <Github className="w-5 h-5" />
+              </div>
+              <div className="min-w-0">
+                <div className="text-sm font-bold text-foreground">GitHub</div>
+                <div className="text-sm text-muted-foreground truncate">
+                  {personalInfo.github.replace("https://", "")}
+                </div>
+              </div>
+            </div>
+            <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
+          </a>
+        </div>
+      </Reveal>
+    </Section>
   );
 }

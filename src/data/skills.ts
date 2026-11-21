@@ -1,53 +1,75 @@
-import { Monitor, Smartphone, Cpu, Wrench, LucideIcon } from "lucide-react";
-
-export type SkillCategory = {
-  category: string;
-  icon: LucideIcon;
-  skills: string[];
-};
+import type { SkillCategory } from "@/types";
 
 export const technicalSkills: SkillCategory[] = [
   {
     category: "Frontend",
-    icon: Monitor,
-    skills: ["React", "Angular", "Next.js", "TypeScript", "JavaScript", "HTML & CSS", "Tailwind CSS"]
+    skills: [
+      "React",
+      "Angular",
+      "Next.js",
+      "TypeScript",
+      "JavaScript",
+      "HTML & CSS",
+      "Tailwind CSS",
+    ],
+  },
+  {
+    category: "Backend",
+    skills: ["Node.js", "Express.js", "PostgreSQL", "REST API Design"],
   },
   {
     category: "Mobile",
-    icon: Smartphone,
-    skills: ["Flutter", "Dart"]
+    skills: ["Flutter", "Dart"],
   },
   {
     category: "Engineering",
-    icon: Cpu,
-    skills: ["Component Architecture", "State Management", "REST API", "Responsive Design", "Accessibility", "Web Performance", "Testing"]
+    skills: [
+      "Component Architecture",
+      "State Management",
+      "API Integration",
+      "Responsive Design",
+      "Accessibility",
+      "Web Performance",
+      "Testing",
+      "AI-Assisted Development",
+    ],
   },
   {
     category: "Tools",
-    icon: Wrench,
-    skills: ["Git", "GitHub", "VS Code", "Figma", "CI/CD"]
-  }
+    skills: [
+      "Git",
+      "GitHub",
+      "VS Code",
+      "Figma",
+      "CI/CD",
+      "AI Coding Assistants",
+    ],
+  },
 ];
 
 export const engineeringApproach = [
   {
     id: "01",
     title: "Maintainability",
-    description: "Build modular applications with clear boundaries, reusable components, and strict adherence to clean code principles."
+    description:
+      "Build modular applications with clear boundaries, reusable components, and strict adherence to clean TypeScript and separation of concerns.",
   },
   {
     id: "02",
     title: "Reliability",
-    description: "Handle loading, error, empty and edge cases as first-class citizens to ensure a resilient user experience."
+    description:
+      "Handle loading, error, empty, and validation states as first-class citizens so financial and enterprise workflows stay predictable.",
   },
   {
     id: "03",
     title: "Performance",
-    description: "Minimize unnecessary renders, network requests, and client-side complexity to deliver fast, fluid applications."
+    description:
+      "Minimize unnecessary re-renders, payload overhead, and client-side complexity to keep data-heavy applications responsive.",
   },
   {
     id: "04",
     title: "User Experience",
-    description: "Create highly responsive, accessible, and predictable interfaces that delight users on any device."
-  }
+    description:
+      "Craft accessible, keyboard-navigable, and responsive interfaces that hold up across desktop, tablet, and mobile viewports.",
+  },
 ];

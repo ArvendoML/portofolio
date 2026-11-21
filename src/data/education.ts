@@ -1,14 +1,4 @@
-export interface Education {
-  id: string;
-  school: string;
-  degree: string;
-  fieldOfStudy: string;
-  startDate: string;
-  endDate: string;
-  location: string;
-  description: string;
-  achievements: string[];
-}
+import type { Education } from "@/types";
 
 export const education: Education[] = [
   {
@@ -20,7 +10,7 @@ export const education: Education[] = [
     endDate: "2023",
     location: "Tangerang, Indonesia",
     description:
-      "Completed a comprehensive undergraduate program with a focus on software engineering and application development.",
+      "Completed undergraduate studies in Informatics with core coursework in algorithms, software engineering, databases, and web application development.",
     achievements: [],
   },
   {
@@ -32,7 +22,7 @@ export const education: Education[] = [
     endDate: "2022",
     location: "Remote, Indonesia",
     description:
-      "Intensive Fullstack Web Development bootcamp program as part of the Kampus Merdeka initiative.",
+      "Intensive Fullstack Web Development program under Indonesia's Kampus Merdeka initiative covering REST APIs, Node.js, Express.js, PostgreSQL, and React.",
     achievements: [],
   },
   {
@@ -44,7 +34,7 @@ export const education: Education[] = [
     endDate: "2022",
     location: "Remote, Indonesia",
     description:
-      "Comprehensive Front-End Web and React Developer bootcamp program as part of the Kampus Merdeka initiative.",
+      "Focused Front-End Web and React engineering track under Kampus Merdeka covering accessible semantic HTML, responsive CSS, JavaScript, and React architecture.",
     achievements: [],
   },
 ];

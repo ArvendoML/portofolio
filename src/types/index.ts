@@ -1,18 +1,22 @@
-export interface Technology {
-  name: string;
-  icon?: string;
-}
-
 export type ProjectCategory =
-  | "Web Banking Application"
-  | "Mobile Banking Application"
+  | "Web Application"
+  | "Mobile Application"
   | "Personal Project";
+
+export type ProjectStatus = "Production" | "Internal" | "Open Source";
+
+export interface ArchitectureLayer {
+  layer: string;
+  tech: string;
+  detail: string;
+}
 
 export interface Project {
   id: string;
   name: string;
   shortDescription: string;
   role: string;
+  status: ProjectStatus;
   technologies: string[];
   type: ProjectCategory;
   keyContribution: string;
@@ -20,9 +24,9 @@ export interface Project {
   challenges: string[];
   solution: string;
   architecture?: string;
+  architectureLayers?: ArchitectureLayer[];
   githubUrl?: string;
   liveUrl?: string;
-  imageUrl?: string;
   images?: string[];
 }
 
@@ -30,6 +34,7 @@ export interface ExperienceProject {
   name: string;
   description: string;
   technologies: string[];
+  projectId?: string;
 }
 
 export interface Experience {
@@ -45,22 +50,26 @@ export interface Experience {
   technologies?: string[];
 }
 
-export type SkillCategory =
+export type SkillGroupName =
   | "Frontend"
   | "Backend"
   | "Mobile"
   | "Engineering"
   | "Tools";
 
-export interface Skill {
-  name: string;
-  category: SkillCategory;
+export interface SkillCategory {
+  category: SkillGroupName;
+  skills: string[];
 }
 
 export interface Education {
-  institution: string;
+  id: string;
+  school: string;
   degree: string;
-  field: string;
+  fieldOfStudy: string;
   startDate: string;
   endDate: string;
+  location: string;
+  description: string;
+  achievements: string[];
 }
