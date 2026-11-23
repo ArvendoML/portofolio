@@ -15,7 +15,7 @@ export const aboutData: {
   stats: Stat[];
 } = {
   paragraphs: [
-    "Specializing in frontend and mobile engineering with React, Angular, TypeScript, and Flutter across enterprise platforms, fintech products, and internal tools—while expanding into fullstack API and database development with Node.js, Express.js, and PostgreSQL.",
+    "Specializing in frontend and mobile engineering with React, Angular, TypeScript, and Flutter across enterprise platforms, fintech products, and internal tools, while expanding into fullstack API and database development with Node.js, Express.js, and PostgreSQL.",
   ],
   stats: [
     {
