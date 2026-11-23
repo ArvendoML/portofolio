@@ -29,8 +29,8 @@ export default function AllProjectsPage() {
             All Projects
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl">
-            A comprehensive overview of the web applications, mobile apps, and
-            engineering projects I&apos;ve built.
+            A complete overview of enterprise web applications, consumer mobile
+            apps, and personal engineering projects.
           </p>
         </header>
 

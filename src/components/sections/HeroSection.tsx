@@ -33,16 +33,17 @@ export function HeroSection() {
           <Reveal immediate className="lg:col-span-7">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-border bg-card/80 text-xs font-mono text-muted-foreground mb-6">
               <MapPin className="w-3.5 h-3.5 text-primary" />
-              <span>
-                {personalInfo.name} · {personalInfo.location}
-              </span>
+              <span>{personalInfo.location}</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6 leading-[1.08]">
-              Software Engineer building{" "}
-              <span className="text-primary">reliable</span> web &amp; mobile
-              systems.
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-4 leading-[1.08]">
+              {personalInfo.name}
             </h1>
+
+            <p className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground/85 mb-6">
+              <span className="text-primary">{personalInfo.role}</span> — Web
+              &amp; Mobile Applications
+            </p>
 
             <div className="text-base sm:text-lg text-muted-foreground mb-8 leading-relaxed max-w-2xl space-y-4">
               {aboutData.paragraphs.map((paragraph, index) => (

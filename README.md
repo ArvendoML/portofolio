@@ -1,91 +1,73 @@
-# Arvendo Manuel Lextian — Software Engineer Portfolio
+# Arvendo Manuel Lextian — Portfolio
 
-Personal portfolio website built with **Next.js 16 (App Router)**, **React 19**, **TypeScript**, and **Tailwind CSS v4**. Designed as a frontend engineering showcase highlighting enterprise web applications, consumer mobile apps, and fullstack growth.
+Personal portfolio website built with Next.js (App Router), React, TypeScript, and Tailwind CSS.
 
-## Overview
+Live site: [arvendomlextian.vercel.app](https://arvendomlextian.vercel.app)
 
-- **Role & Positioning:** Software Engineer (Frontend-first across web and mobile, expanding into Node.js, Express.js, and PostgreSQL).
-- **Architecture:** Strictly frontend-only static/SSG Next.js application with decoupled TypeScript datasets (`src/data/`) and pure selector/filter helpers (`src/lib/`).
-- **Key Features:**
-  - Responsive layout with zero-flash Dark/Light theme persistence (`useSyncExternalStore` + pre-hydration script).
-  - Scroll-spy sticky navigation (`IntersectionObserver`) and global Server Component footer.
-  - Paginated 2×2 project carousel (max 4 cards per slide) with category filtering on Home and full-text + category search on `/projects`.
-  - Project case study pages (`/projects/[id]`) with `next/image` slideshow, keyboard-accessible fullscreen lightbox, structured frontend architecture diagrams, and Previous/Next navigation.
-  - Direct contact channels with Gmail / Outlook Web quick-compose menu and one-click email copy.
-  - SEO-ready with dynamic `generateMetadata`, `opengraph-image.tsx`, `sitemap.ts`, `robots.ts`, and a custom `not-found.tsx`.
+## What's Inside
 
-## Tech Stack
+- **Home page:** Intro, work experience timeline, selected projects (2×2 paged carousel with category filters), education, technical skills, engineering approach, and direct contact links.
+- **Projects archive (`/projects`):** Searchable and filterable list of all projects.
+- **Project case studies (`/projects/[id]`):** Project details, image slideshow with fullscreen lightbox (`next/image`), architecture breakdown for projects without public screenshots, and previous/next navigation.
+- **Theme & SEO:** Dark/light theme toggle backed by `localStorage` with no initial flash, dynamic `generateMetadata`, Open Graph image generation, `sitemap.xml`, `robots.txt`, and a custom 404 page.
 
-| Layer | Technology |
-| --- | --- |
-| Framework | Next.js 16.3.8 (App Router, Turbopack) |
-| Language | TypeScript 5 (strict mode) |
-| UI & Styling | React 19, Tailwind CSS v4, Lucide Icons |
-| Motion | Framer Motion (`reducedMotion="user"`) |
-| Carousel | Embla Carousel (`embla-carousel-react`, `embla-carousel-autoplay`) |
-| Testing | Vitest, React Testing Library, Jest DOM, jsdom |
-| Linting | ESLint 9 (`eslint-config-next`) |
+## Stack
 
-## Project Structure
+- Next.js 16 (App Router) & React 19
+- TypeScript
+- Tailwind CSS v4
+- Framer Motion & Embla Carousel
+- Lucide React
+- Vitest & React Testing Library
+
+## Folder Structure
 
 ```text
 src/
-├── __tests__/           # Vitest + React Testing Library test suite
-├── app/                 # App Router routes, layout, metadata, OG image, sitemap, robots, 404
+├── __tests__/      # Component and helper tests
+├── app/            # Routes, layout, metadata, sitemap, robots, OG image
 ├── components/
-│   ├── layout/          # Sticky scroll-spy Navbar and Server Component Footer
-│   ├── projects/        # ProjectCard, ProjectsCatalog, ProjectSlideshow, ArchitectureDiagram
-│   ├── providers/       # MotionProvider (prefers-reduced-motion)
-│   ├── sections/        # Landing page sections (Hero, Experience, Projects, Education, Skills, Approach, Contact)
-│   └── ui/              # Reusable primitives (Section, SectionHeader, Reveal, Badge, Timeline, StatsGrid)
-├── data/                # Pure TypeScript datasets (personal, about, experience, education, skills, projects)
-├── hooks/               # Hydration-safe theme persistence hook
-├── lib/                 # Pure project selectors, filtering, and adjacency helpers
-└── types/               # Centralized TypeScript domain interfaces
+│   ├── layout/     # Navbar and Footer
+│   ├── projects/   # ProjectCard, ProjectsCatalog, ProjectSlideshow, ArchitectureDiagram
+│   ├── providers/  # Framer Motion reduced-motion provider
+│   ├── sections/   # Home page sections
+│   └── ui/         # Shared UI primitives
+├── data/           # Static content (personal, about, experience, education, skills, projects)
+├── hooks/          # Theme hook
+├── lib/            # Project filtering and lookup helpers
+└── types/          # Shared TypeScript types
 ```
 
-## Getting Started
+## Local Setup
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open `http://localhost:3000`.
 
-## Scripts & Verification
+## Scripts
 
 ```bash
-# Run unit and component tests
-npm test
-
-# Watch mode during development
-npm run test:watch
-
-# Type-check with TypeScript
-npx tsc --noEmit
-
-# Lint with ESLint
-npm run lint
-
-# Build for production (generates static/SSG routes)
-npm run build
-
-# Serve production build locally
-npm run start
+npm test            # Run Vitest suite
+npm run test:watch  # Run tests in watch mode
+npx tsc --noEmit    # Type-check
+npm run lint        # Run ESLint
+npm run build       # Production build
+npm run start       # Start production server
 ```
 
-## Engineering & Design Decisions
+## Notes
 
-- **Server Components by Default:** `HeroSection`, `ExperienceSection`, `EducationSection`, `SkillsSection`, `ApproachSection`, `StatsGrid`, and `Footer` render on the server; animations are isolated inside a small `<Reveal>` client wrapper so client JavaScript stays minimal.
-- **Pure Data Layer:** `src/data/` and `src/types/` contain no React or icon-library imports—icons and presentation mappings live strictly inside UI components.
-- **Hydration & Motion Safety:** Dark/light theme state initializes synchronously before first paint and syncs via `useSyncExternalStore`, while `MotionConfig reducedMotion="user"` respects OS reduced-motion preferences.
-- **No Fake Backend:** Contact actions route cleanly to Gmail/Outlook compose tabs, `mailto:`, or clipboard copy without simulating server form submissions.
+- Static sections (`Hero`, `Experience`, `Education`, `Skills`, `Approach`, `Footer`) stay as Server Components; scroll animations are wrapped in a small `<Reveal>` client component.
+- `src/data/` and `src/types/` hold plain data only, keeping UI icons and components separated in `src/components/`.
+- No backend is used. Contact actions open Gmail/Outlook compose tabs, `mailto:`, or copy the email address directly.
 
-## Deployment
+## Environment Variable
 
-Designed for static/SSG deployment on Vercel or any Node/Next.js host. Set `NEXT_PUBLIC_SITE_URL` in your environment variables to match your production domain for `sitemap.xml`, `robots.txt`, and Open Graph canonical URLs:
+When deploying, set `NEXT_PUBLIC_SITE_URL` so sitemap, robots, and Open Graph URLs point to the right domain:
 
 ```bash
-NEXT_PUBLIC_SITE_URL=https://your-domain.com
+NEXT_PUBLIC_SITE_URL=https://arvendomlextian.vercel.app
 ```
